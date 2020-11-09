@@ -1,7 +1,7 @@
 import React from 'react'
 import Home from '../Home';
 import Transfer from '../transfers';
-import fd from '../fd';
+import fd from '../FixedDeposit/fixedDeposit';
 import Navbar from '../Navbar/Navbar';
 import Logout from '../Auth/logout'
 import {BrowserRouter as Router,Route, Link,Switch, Redirect} from 'react-router-dom';

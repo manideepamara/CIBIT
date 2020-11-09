@@ -171,3 +171,10 @@
         display: none;
     }
 }
+
+
+.nav-links-mobile:hover{
+    background-color: #fff;
+    color:#6568f4;
+    transition: 250ms;
+}
