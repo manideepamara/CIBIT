@@ -1,6 +1,6 @@
 .fd {
     margin :30px 100px;
-    height:650px;
+    height:500px;
    
 }
 
@@ -27,6 +27,10 @@
 
 
 }
+
+
+
+
 
 .component-item{
     
@@ -116,7 +120,6 @@
 
 
 
-
 @media screen and (max-width:960px){
     .component {
        display:block;
@@ -132,6 +135,7 @@
     }
     
     .fd{
+        height:650px;
         height:100%
     }
 }

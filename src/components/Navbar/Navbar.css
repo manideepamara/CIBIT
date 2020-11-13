@@ -59,7 +59,7 @@
     outline: none;
     border: none;
     cursor: pointer;
-    background: ;
+    
     
 }
 
@@ -167,9 +167,7 @@
     }
 
 
-    Button {
-        display: none;
-    }
+   
 }
 
 

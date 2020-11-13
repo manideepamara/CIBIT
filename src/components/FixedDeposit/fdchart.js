@@ -11,7 +11,7 @@ import React,{useEffect,useState} from 'react';
           tp=tp/12;
         }
           const interest = (principal*Math.pow((1+roi/4),4*tp))-principal;
-      console.log(principal,roi,tp,timeperiod,interest)
+          console.log(principal,roi,tp,timeperiod,interest)
            const  chartData={ labels:['Total Investment' , 'Total Interest'],
              datasets:[
                  {

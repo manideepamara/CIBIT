@@ -16,10 +16,10 @@
     validateDetails({username,password}){
         
         axios
-            .get(`http://localhost:4000/users/?username=${username}`)
+            .get(`http://localhost:4000/auth/?username=${username}`)
             .then((res)=>{
                 console.log(res.data[0])
-                if(res.data.length==1
+                if(res.data.length===1
                      && password===res.data[0].password)
                         this.props.handleLogin(username,true,"");
                 else

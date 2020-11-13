@@ -1,6 +1,73 @@
 {
 
-    "users":[
+
+
+    "monthlyExpenseLimit":[
+        {
+            "accid":"ac123",
+            "left":1000,
+            "spent":0
+        },
+        {
+            "accid":"ac124",
+            "left":1000,
+            "spent":0
+
+        },
+        {
+            "accid":"ac126",
+            "left":1000,
+            "spent":0
+        },{
+            "accid":"ac126",
+            "left":1000,
+            "spent":0
+        }
+        
+    ],
+
+
+
+    "credit":[
+        {
+            "accid":"ac123",
+            "balance":1000
+        },
+        {
+            "accid":"ac124",
+            "balance":1000
+        },
+        {
+            "accid":"ac126",
+            "balance":1000
+        },{
+            "accid":"ac126",
+            "balance":1000
+        }
+        
+    ],
+
+    
+        
+            "savings":[
+                {
+                    "accid":"ac123",
+                    "balance":100
+                },
+                {
+                    "accid":"ac124",
+                    "balance":1000
+                },
+                {
+                    "accid":"ac126",
+                    "balance":1000
+                },{
+                    "accid":"ac126",
+                    "balance":1000
+                }
+                
+            ],
+    "auth":[
         {
             "username":"ac123",
             "password":"123"
@@ -18,5 +85,10 @@
             "password":"126 "
         }
 
+    ],
+    "transaction":[
+
     ]
+
+    
 } 
