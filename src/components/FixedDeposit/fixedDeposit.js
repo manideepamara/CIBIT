@@ -4,6 +4,7 @@ import Form from './form';
 import FDchart from './fdchart';
 import MyModal from './modal';
 import Axios from 'axios';
+import Success from './success';
 class Fd extends React.Component{
 
     constructor(props){
@@ -15,13 +16,38 @@ class Fd extends React.Component{
             timeperiod:'',
             debitedFrom:'',
             isOpen:false,
-            condition:0
+            condition:0,
+            stage:1
             
         }
-        this.handleBeforeDeposit=this.handleBeforeDeposit.bind(this);
+        
         this.handleDeposit=this.handleDeposit.bind(this);
         this.handleModal=this.handleModal.bind(this);
         this.handleInput=this.handleInput.bind(this);
+        this.handleSuccess=this.handleSuccess.bind(this);
+        this.handleClear=this.handleClear.bind(this);
+    }
+
+    handleClear(){
+        this.setState({
+            principal:'',
+            roi:'',
+            tp:'',
+            timeperiod:'',
+            debitedFrom:'',
+            isOpen:false,
+            condition:0,
+            stage:1
+        })
+    }
+    handleSuccess(){
+        //update balance and add transaction
+        this.setState(
+            {
+                stage:2,
+                isOpen:false
+            }
+        )
     }
     handleModal(){
         
@@ -41,17 +67,28 @@ class Fd extends React.Component{
                 const {balance}=savResponse.data[0]
                 console.log(balance,"bal")
                 if(balance>=principal){
-                    console.log(this.state,"bal")
-                
-                    this.setState({
-                        condition:3
-                    })
-
+                    const thresold = 5;
+                    let spentPercentage = (spent+principal)/(spent+left)
+                    spentPercentage*=100;
+                    if(spentPercentage<=thresold){
+                       
+                       //update balance and add tarnsaction
+                        this.setState({
+                            stage:2
+                        })
+                    }else{
+                        this.setState({
+                            isOpen:true,
+                            condition:3
+                        })
+                    }
                     
+                   
                 }
                 else{
                     this.setState({
-                        condition:2
+                        condition:2,
+                        isOpen:true
                     })
                     
                 }
@@ -59,6 +96,7 @@ class Fd extends React.Component{
         }
         else{
             this.setState({
+                isOpen:true,
                 condition:1
             })
              
@@ -69,13 +107,7 @@ class Fd extends React.Component{
 
 
 
-    async handleBeforeDeposit(){
-        console.log("before",this.state.condition)
-        
-        await this.handleDeposit()
-        console.log("after",this.state.condition)
-        this.handleModal()
-    }
+    
     handleInput(e){
        if(!isNaN(e.target.value)||e.target.name==='timeperiod'||e.target.name==='debitedFrom'){
             this.setState({
@@ -89,24 +121,37 @@ class Fd extends React.Component{
             <>
                 <div className="fd">
                 
-                    <div className="header">Fixed deposits for {this.props.match.params.acid}</div>
+                    <div className="header">
+                       {this.state.stage===1?<div className="header-active">Deposit</div>: <div>Deposit</div>}
+                       {this.state.stage===2?<div className="header-active">Success</div>:<div>Success</div>}
+                    </div>
                     <div className="component">
-                        <div className="component-item">
+                       
                             
-                            <Form details={this.state} handleInput={this.handleInput} handleDeposit={this.handleBeforeDeposit}/>
-                        </div>
-                        {
-                            this.state.tp!==''&&this.state.principal!==''&&this.state.roi!==''&&this.state.timeperiod!==""?
-                                <div  className="component-item">
-                                    
-                                    <FDchart details={this.state} />
+                            {this.state.stage===1 && 
+                               
+                               <>
+                                <div className="component-item">
+                                    <Form details={this.state} handleInput={this.handleInput} handleDeposit={this.handleDeposit}/>
                                 </div>
-                            :
-                                ""
-                        }
-                    </div>      
+                                    {
+                                        this.state.tp!==''&&this.state.principal!==''&&this.state.roi!==''&&this.state.timeperiod!==""?
+                                            <div  className="component-item">
+                                        
+                                                <FDchart details={this.state} />
+                                            </div>
+                                        :
+                                        ""
+                                    } 
+                               </>
+                             }{
+                                 this.state.stage===2 && <Success handleClear={this.handleClear} />
+                             }
+                       
+                        
                 </div>
-                <MyModal handleModal={this.handleModal}  details={this.state}/>  
+                </div>
+                <MyModal handleModal={this.handleModal} handleSuccess={this.handleSuccess} details={this.state}/>  
             </>
         )
     }

@@ -8,7 +8,7 @@ function MyModal(props) {
    
   return <Modal
     isOpen={props.details.isOpen}
-    onRequestClose={props.handleModal}
+    onRequestClose={props.handleClearModal}
     contentLabel="Selected Option"
     closeTimeoutMS={200}
     ariaHideApp={false}
@@ -25,9 +25,10 @@ function MyModal(props) {
     
     rhrehrehrehrehreherh
     </p>}
-    {props.details.condition===3?<><button className="button-modal" onClick={props.handleModal}>NO</button>
+
+    {props.details.condition===3?<><button className="button-modal" onClick={props.handleClearModal}>NO</button>
       <button className="button-modal" onClick={props.handleSuccess}>Yes</button> </>:
-      <button className="button-modal" onClick={props.handleModal} >Okay</button> }
+      <button className="button-modal" onClick={props.handleClearModal} >Okay</button> }
   </Modal>
 }
 

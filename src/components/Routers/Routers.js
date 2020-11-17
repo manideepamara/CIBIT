@@ -1,12 +1,18 @@
 import React from 'react'
 import Home from '../Home';
-import Transfer from '../transfers';
+import Transfer from '../FundTransfer/transfers'
 import Fd from '../FixedDeposit/fixedDeposit';
 import Navbar from '../Navbar/Navbar';
 import Logout from '../Auth/logout'
 import {createBrowserHistory} from 'history';
 import {BrowserRouter as Router,Route ,Link,Switch, Redirect} from 'react-router-dom';
-function AppRouter({username,handleLogout}){
+class AppRouter extends React.Component{
+
+constructor(props){
+  super(props);
+}
+render(){
+    const {username,handleLogout}=this.props;
     const history = createBrowserHistory();
     return <Router history={history} >
 
@@ -17,14 +23,14 @@ function AppRouter({username,handleLogout}){
       <Route exact path ="/dashboard/:acid" component={Home}></Route>
       <Route exact path = "/transfers/:acid" component={Transfer}></Route>
       <Route exact path = "/fd/:acid" component={(props) => <Fd history={history} {...props}/>}></Route>
-      <Route exact path = "/logout/:acid" component = {()=><Logout handleLogout={handleLogout}/>}></Route>
+      <Route exact path = "/logout/:acid" component = {(props)=><Logout {...props} history={history} handleLogout={handleLogout}/>}></Route>
       <Route path = "*" component ={() => {
         return <h1>Page Not Found</h1>
       }
       }></Route>
     </Switch>
   </Router>
-
+}
 
 }
 

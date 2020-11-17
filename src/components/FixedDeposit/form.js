@@ -25,6 +25,9 @@ function Form({details,handleInput,handleDeposit}) {
                <option value="">Debited from </option >
                 <option className="form-input__option"value="savings">Savings</option>
                 <option className="form-input__option"value="credit">Credit card</option>
+                <option className="form-input__option"value="current">current</option>
+                
+                
             </select>
             {check &&<input className="button" type="button" value="Deposit" onClick={e => handleDeposit()}></input>}
         </div>

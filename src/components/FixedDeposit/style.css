@@ -5,14 +5,21 @@
 }
 
 .header {
-   font-size:30px;
+   
     text-align: center;
     font-family: sans-serif;
     background-color:#f1f1f1;
     margin-bottom: 15px;
-   
+    display:flex;
+    justify-content: space-around;
     height:50px;
     padding:10px 0px;
+}
+
+.header-active {
+    background: cornflowerblue;
+   
+    padding:8px 20px;
 }
 .component {
     
