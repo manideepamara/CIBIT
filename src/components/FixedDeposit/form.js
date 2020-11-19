@@ -3,7 +3,7 @@
 import React from 'react';
 import './style.css';
 function Form({details,handleInput,handleDeposit}) {
-    const {principal,roi,timeperiod,tp,debitedFrom}=details
+    const {principal,roi,timeperiod,tp,debitedFrom,accountdetails}=details
     const check=principal&&roi&&timeperiod&&tp&&debitedFrom;
     return (
         <div className="form">
@@ -23,10 +23,16 @@ function Form({details,handleInput,handleDeposit}) {
             </div>           
             <select className="form-input"  name="debitedFrom" onChange={e => handleInput(e)}>
                <option value="">Debited from </option >
-                <option className="form-input__option"value="savings">Savings</option>
+                {/* <option className="form-input__option"value="savings">Savings</option>
                 <option className="form-input__option"value="credit">Credit card</option>
                 <option className="form-input__option"value="current">current</option>
-                
+                 */}
+
+                 {
+                     accountdetails.map( account => 
+                            <option key={account.account_id} className="form-input__option" value={account.account_id}>{account.account_type}</option> 
+                    )
+                 }
                 
             </select>
             {check &&<input className="button" type="button" value="Deposit" onClick={e => handleDeposit()}></input>}

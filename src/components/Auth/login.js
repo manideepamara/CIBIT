@@ -16,11 +16,9 @@
     validateDetails({username,password}){
         
         axios
-            .get(`http://localhost:4000/auth/?username=${username}`)
+            .post(`http://localhost:8080/customer/authorize`,{username,password})
             .then((res)=>{
-                console.log(res.data[0])
-                if(res.data.length===1
-                     && password===res.data[0].password)
+                if(res.data==="valid")
                         this.props.handleLogin(username,true,"");
                 else
                     this.props.handleLogin('',false,"error")

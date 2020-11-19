@@ -17,7 +17,8 @@ class Fd extends React.Component{
             debitedFrom:'',
             isOpen:false,
             condition:0,
-            stage:1
+            stage:1,
+            accountdetails:[]
             
         }
         
@@ -28,7 +29,27 @@ class Fd extends React.Component{
         this.handleClear=this.handleClear.bind(this);
     }
 
+
+    async initiate(){
+        const username = this.props.match.params.acid;
+          let accountdetails =  await Axios.get(`http://localhost:8080/customer/getAccountDetails/${username}`);
+          
+          
+          accountdetails=accountdetails.data;
+            accountdetails.map( async (account) => {
+         let res = await Axios.get(`http://localhost:8080/account/spent_amount/${account.account_id}`);
+
+            this.setState({accountdetails:[...this.state.accountdetails,{...account,expense_spent:res.data}]});
+            
+        });
+    }
+    componentDidMount(){
+        this.initiate();
+        // console.log(value);
+    }
+
     handleClear(){
+        this.initiate();
         this.setState({
             principal:'',
             roi:'',
@@ -39,6 +60,7 @@ class Fd extends React.Component{
             condition:0,
             stage:1
         })
+        
     }
     handleSuccess(){
         //update balance and add transaction

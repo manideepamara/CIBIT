@@ -1,5 +1,5 @@
 import React from 'react'
-import Home from '../Home';
+import Home from '../Home/Home';
 import Transfer from '../FundTransfer/transfers'
 import Fd from '../FixedDeposit/fixedDeposit';
 import Navbar from '../Navbar/Navbar';
