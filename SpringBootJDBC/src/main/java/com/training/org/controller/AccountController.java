@@ -29,6 +29,7 @@ public class AccountController {
 	@Autowired
 	private TransactionService transactionService;
 	
+
 	//Saving Accounts to Database
 	
 //	@PostMapping("/account")
@@ -54,7 +55,7 @@ public class AccountController {
 			bal1 = bal1 - transaction.getAmount();
 			bal2 = bal2 + transaction.getAmount();
 		}
-		else {
+		else {    
 			bal1 = bal1 + transaction.getAmount();
 			bal2 = bal2 - transaction.getAmount();
 		}
