@@ -21,9 +21,9 @@ class Tracker extends Component{
    
      this.state={
         data:{
-            labels:["Expense spent","Monthly Expense Limit"],
+            labels:["Expense spent","Expense Left"],
                datasets:[{
-                     data: [this.props.expense_spent, this.props.monthly_expense_limit],
+                     data: [this.props.expense_spent, this.props.monthly_expense_limit-this.props.expense_spent],
                      backgroundColor:["#80ff00","#9932CC"],
                      borderWidth:2,
                      borderColor:"gray",
@@ -33,8 +33,8 @@ class Tracker extends Component{
     }}
     render(){
         return(
-            <div id="Trackerchart" >
-            <h1>{this.props.account_type}</h1>
+            <div id="Trackerchart"  >
+            <h1 style={{"margin-left": "100px"}}>{this.props.account_type}</h1>
             <Doughnut data={this.state.data}   options={{responsive:true, maintainAspectRatio: true}}/>
             </div>
             

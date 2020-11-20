@@ -8,7 +8,7 @@ class FtForm extends React.Component{
 
     render(){
         const {details,handleInput,handleProceed}=this.props;
-        const {debitedFrom,to,amount,desc}=details;
+        const {debitedFrom,to,amount,desc,accountdetails}=details;
         const check=debitedFrom&&to&&amount&&desc;
         console.log(details);
         return (
@@ -16,9 +16,7 @@ class FtForm extends React.Component{
                         <div className="ft-form-element">
                             <select className="ft-form-input" placeholder="from" value={debitedFrom} name="debitedFrom" onChange={handleInput}>
                                 <option value="">debitedFrom</option>
-                                <option value="savings">Savings</option>
-                                <option value="credit">credit card</option>
-                                <option value="current">current</option>
+                                {accountdetails.map( account => <option key={account.account_id} value={account.account_id}>{account.account_type}</option>)}
                             </select>
                             <BiSend />
                             <input type="text"  className="ft-form-input" name="to" value={to} onInput={handleInput} placeholder="beneficiary account id"></input>

@@ -49,7 +49,7 @@ class Fd extends React.Component{
     }
 
     handleClear(){
-        this.initiate();
+        
         this.setState({
             principal:'',
             roi:'',
@@ -58,12 +58,20 @@ class Fd extends React.Component{
             debitedFrom:'',
             isOpen:false,
             condition:0,
-            stage:1
+            stage:1,
+            accountdetails:[]
         })
+        this.initiate();
         
     }
     handleSuccess(){
-        //update balance and add transaction
+        const {principal,debitedFrom}=this.state;
+        Axios.post("http://localhost:8080/account/FixedDeposit",{
+            from_account_id:debitedFrom,
+            amount:principal,
+            transaction_type:"debit",
+            remark:"fd"
+        }).then(res => console.log(res));
         this.setState(
             {
                 stage:2,
@@ -81,20 +89,36 @@ class Fd extends React.Component{
 
         const uid=this.props.match.params.acid;
         const {principal,debitedFrom}=this.state;
-        let melResponse = await Axios.get(`http://localhost:4000/monthlyExpenselimit/?accid=${uid}`)
-        const {left,spent}=melResponse.data[0]
+
+        const {account_balance,expense_spent,monthly_expense_limit,threshold_amount} = this.state.accountdetails.find(account => {
+            console.log(account.account_id,debitedFrom);
+            return account.account_id==debitedFrom
+        })
+       
+        const left = monthly_expense_limit - expense_spent
+        
+        console.log(left,principal)
         if(left>=principal){
-                let savResponse = await Axios.get(`http://localhost:4000/${debitedFrom}/?accid=${uid}`)
+                
                          
-                const {balance}=savResponse.data[0]
-                console.log(balance,"bal")
-                if(balance>=principal){
-                    const thresold = 5;
-                    let spentPercentage = (spent+principal)/(spent+left)
+                
+                console.log(account_balance,"bal")
+                if(account_balance>=principal){
+                   
+                    let spentPercentage = (expense_spent+parseInt(principal))/(expense_spent+left)
                     spentPercentage*=100;
-                    if(spentPercentage<=thresold){
+                    console.log(spentPercentage,threshold_amount);
+                    if(spentPercentage<=threshold_amount){
                        
-                       //update balance and add tarnsaction
+                       Axios.post("http://localhost:8080/account/FixedDeposit",{
+                           from_account_id:debitedFrom,
+                           amount:principal,
+                           transaction_type:"debit",
+                           remark:"fd"
+
+                       }).then(res =>  console.log(res)
+                        )
+
                         this.setState({
                             stage:2
                         })

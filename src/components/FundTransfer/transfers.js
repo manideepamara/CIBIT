@@ -15,7 +15,8 @@ class Transfer extends Component{
             desc:"",
             stage:1,
             condition:0,
-            isOpen:false
+            isOpen:false,
+            accountdetails:[]
         }
         this.handleInput=this.handleInput.bind(this);
         this.handleProceed=this.handleProceed.bind(this);
@@ -26,6 +27,23 @@ class Transfer extends Component{
         this.handleSuccess=this.handleSuccess.bind(this);
         this.handleClear=this.handleClear.bind(this);
     }
+
+    async initiate(){
+        const username = this.props.match.params.acid;
+          let accountdetails =  await Axios.get(`http://localhost:8080/customer/getAccountDetails/${username}`);
+          
+          
+          accountdetails=accountdetails.data;
+            accountdetails.map( async (account) => {
+         let res = await Axios.get(`http://localhost:8080/account/spent_amount/${account.account_id}`);
+
+            this.setState({accountdetails:[...this.state.accountdetails,{...account,expense_spent:res.data}]});
+            
+        });
+    }
+    componentDidMount(){
+        this.initiate();
+    }
     handleClear(){
         this.setState({
             debitedFrom:"",
@@ -34,12 +52,23 @@ class Transfer extends Component{
             desc:"",
             stage:1,
             condition:0,
-            isOpen:false
+            isOpen:false,
+            accountdetails:[]
         })
+        this.initiate();
     }
     handleSuccess(){
         //update balance in both from and to
-        //add transaction s credit and debit
+        //add transaction s credit and debi
+        const {debitedFrom,to,amount,desc}=this.state;
+        Axios.post("http://localhost:8080/account/FundsTransfer",{
+                        from_account_id:debitedFrom,
+                        to_account_id:to,
+                        amount:amount,
+                        transaction_type:"debit",
+                        remark:desc
+                    })
+
         this.setState({
             isOpen:false,
             stage:3
@@ -64,22 +93,32 @@ class Transfer extends Component{
    async handleConfirm(){
         //set the conditions 
         const uid=this.props.match.params.acid
-        const {debitedFrom,to,amount,desc}=this.state;
-        const balr = await Axios.get(`http://localhost:4000/${debitedFrom}/?accid=${uid}`);
+        const {debitedFrom,to,amount,desc,accountdetails}=this.state;
+      
        
-        const {balance} = balr.data[0];
+       const {account_id,account_type,account_balance,expense_spent,monthly_expense_limit,threshold_amount}
+                = accountdetails.find( account => account.account_id == debitedFrom);
+       const balance= account_balance;
         if(balance>=amount){
-            const melr = await Axios.get(`http://localhost:4000/monthlyExpenseLimit/?accid=${uid}`);
            
-            const {spent,left}=melr.data[0];
+           
+            const spent=expense_spent;
+            const left = monthly_expense_limit-spent;
             if(left>=amount){
-                const thresold = 5;
-                let spentPercentage  =(spent+amount)/(spent+left);
+                const thresold = threshold_amount
+                let spentPercentage  =(spent+parseInt(amount))/(spent+left);
                 spentPercentage*=100;
                 console.log(spentPercentage);
                 if(spentPercentage<=thresold){
                     //update balance in both dfrom and to
                     //add debit and credit transaction
+                    Axios.post("http://localhost:8080/account/FundsTransfer",{
+                        from_account_id:debitedFrom,
+                        to_account_id:to,
+                        amount:amount,
+                        transaction_type:"debit",
+                        remark:desc
+                    })
                     this.setState({
                         stage:3,
                         

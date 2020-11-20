@@ -22,7 +22,7 @@ class Notification extends React.Component {
         myres
         .forEach( account => {
             const {spent,type,threshold,limit} = account
-            if((spent/limit)*100 < threshold ){
+            if((spent/limit)*100 >= threshold ){
                 toast.warn(`you have crossed thresold in your monthly expense of ${type}`)
                 console.log(`you have crossed thresold in your monthly expense of ${type}`);
             }

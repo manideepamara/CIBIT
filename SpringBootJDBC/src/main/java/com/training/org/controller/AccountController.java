@@ -93,10 +93,10 @@ public class AccountController {
 			int bal  = account.getAccount_balance();
 			bal = bal - transaction.getAmount();
 			
-			accountService.updateBalance(account.getAccount_id(),bal);
-			
+			accountService.updateBalance(bal,account.getAccount_id());
+			System.out.println(bal);
 			Transaction t = new Transaction(transaction.getFrom_account_id(),transaction.getTo_account_id(),
-							transaction.getAmount(),transfer_type,bal,transaction.getRemark(),transaction.getDate());
+						transaction.getAmount(),transfer_type,bal,transaction.getRemark(),transaction.getDate());
 			System.out.println("Line Number 105 : Before saving transaction");
 			transactionService.save(t);
 			
@@ -131,6 +131,9 @@ public class AccountController {
 	
 		
 	}
-	
+	@PostMapping("/test")
+	public Transaction test(@RequestBody Transaction transaction) {
+		return transaction;
+	}
 }
 

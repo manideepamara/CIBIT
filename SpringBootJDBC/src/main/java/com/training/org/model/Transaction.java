@@ -25,7 +25,7 @@ public class Transaction {
 	@Column
 	private int to_account_id;
 	
-	@Column
+	@Column 
 	private int amount;
 	
 	@Column
